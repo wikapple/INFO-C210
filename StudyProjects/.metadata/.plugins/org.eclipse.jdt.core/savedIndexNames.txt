@@ -1,0 +1,7 @@
+INDEX VERSION 1.131+C:\Users\wikap\OneDrive\Desktop\Code\IUS\INFO-C210\StudyProjects\.metadata\.plugins\org.eclipse.jdt.core
+125398772.index
+4288141048.index
+4244394359.index
+1541809560.index
+1657330681.index
+2020404354.index
