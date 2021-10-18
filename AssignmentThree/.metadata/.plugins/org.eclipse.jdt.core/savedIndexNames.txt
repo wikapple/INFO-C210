@@ -1,5 +1,0 @@
-INDEX VERSION 1.131+C:\Users\wikap\OneDrive\Desktop\Code\IUS\INFO-C210\AssignmentThree\.metadata\.plugins\org.eclipse.jdt.core
-4288141048.index
-807971552.index
-2586207003.index
-2837576538.index
