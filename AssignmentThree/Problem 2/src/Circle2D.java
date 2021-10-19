@@ -1,7 +1,7 @@
 import javafx.geometry.Point2D;
 
 /* Circle2D class
- *  Creates a Circle2D object with circle values as data fields, methods compare circle with other circle object
+ *  Creates a Circle2D object with circle values as data fields, methods compare circle with other Circle2D or Point2D object
  *  Author: William Applegate
  *  INFO-C210
  */
@@ -9,7 +9,7 @@ public class Circle2D {
 	//data fields
 	private double x, y;
 	private double radius;
-	private Point2D thisCircleCenter;
+	private Point2D circleCenterPoint;
 	
 	//constructors
 	Circle2D(){
@@ -19,7 +19,7 @@ public class Circle2D {
 		this.x = xInput;
 		this.y = yInput;
 		this.radius = Math.abs(radiusInput);
-		this.thisCircleCenter = new Point2D(this.x, this.y);
+		this.circleCenterPoint = new Point2D(this.x, this.y);
 	}
 	
 	//getters
@@ -33,6 +33,10 @@ public class Circle2D {
 		return this.radius;
 	}
 	
+	public Point2D getCircleCenterPoint() {
+		return this.circleCenterPoint;
+	}
+	
 	//getArea method:
 	public double getArea() {
 		double area = Math.pow(this.radius, 2) * Math.PI;
@@ -44,43 +48,48 @@ public class Circle2D {
 		double circumference = 2 * Math.PI * this.radius; //circumference formula
 		return circumference;
 	}
-	//contains method determines if point at parameter x and y is within circle
+	
+	/*contains method determines if point at parameter x and y is within circle
+	 * Return true if the distance from this circle's center to the point parameter is less than (or equal to?) this circles radius
+	 */
 	public boolean contains(double x, double y) {
-		Point2D newCircle = new Point2D(x, y);
+		
+		Point2D newPoint = new Point2D(x, y);
 
-		if(thisCircleCenter.distance(newCircle) <= this.radius) {
+		if(circleCenterPoint.distance(newPoint) <= this.radius) {
 			return true;
 		}else {
 			return false;
 		}
 	}
 	
-	//overloaded contains method determines if circle contains the new circle parameter.
+	/*contains method determines if circle contains the new circle parameter.
+	 * calculates distance from circle center point to the farthest point on another circle
+	 * if total distance is less than this circle's radius, then this ciricle contains the other circle
+	 */
 	public boolean contains(Circle2D circle){
-		Point2D newCircleCenter = new Point2D(circle.x, circle.y);
-		//greatest distance from this.circle to the farthest away point of the new circle parameter
-		double distance = thisCircleCenter.distance(newCircleCenter) + circle.radius;
 		
-		//if the distance is greater than this.radius, this circle does not contain the circle parameter
-		//if the distance is less than or equal to this.radius, this circle does contain the circle parameter
+		double distance = circleCenterPoint.distance(circle.getCircleCenterPoint()) + circle.radius;
+		
 		if(distance <= this.radius){
 			return true;
 		}else{
 			return false;
 		}
 	}
-	//overlaps method checks if this circle another circle overlap.
+	
+	/*overlaps method determines if this circle and another circle overlap
+	 * Calculates distance between this circle center and another circle's center
+	 * if the sum of their radii is greater than the distance, and if one circle does NOT contain the other, then they overlap.
+	 */
 	public boolean overlaps(Circle2D circle) {
-		Point2D newCircleCenter = new Point2D(circle.getX(), circle.getY());
-		//distance between the center of both circles:
-		double distance = thisCircleCenter.distance(newCircleCenter);
 		
-		//if the sum of both radii is greater than the distance, and this one does not contain the other, then they overlap:
+		double distance = circleCenterPoint.distance(circle.getCircleCenterPoint());
+		
 		if(this.radius + circle.radius > distance && !contains(circle) && !circle.contains(this)) {
 			return true;
 		}else {
 			return false;
 		}
-		
 	}
 }

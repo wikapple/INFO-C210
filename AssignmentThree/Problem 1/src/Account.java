@@ -65,8 +65,10 @@ public class Account {
 		double monthlyInterest = this.balance * monthlyInterestPercent;
 		return monthlyInterest;
 	}
-	//withdraw method decreases balance if applicable
-	//returns boolean value if withdraw successful or not
+	
+	/*withdraw method decreases balance if applicable
+	 *returns boolean value if withdraw successful or not
+	 */
 	public boolean withdraw(double withdrawAmount){
 		if(withdrawAmount <= 0) {
 			System.out.println("Invalid withdraw amount entered");
@@ -82,8 +84,9 @@ public class Account {
 		}
 	}
 	
-	//deposit method increases this.balance if applicable
+	/*deposit method increases this.balance if applicable
 	//returns boolean value if deposit successful or not.
+	*/
 	public boolean deposit(double depositAmount) {
 		if(depositAmount <= 0) {
 			System.out.println("Invalid deposit amount entered");
