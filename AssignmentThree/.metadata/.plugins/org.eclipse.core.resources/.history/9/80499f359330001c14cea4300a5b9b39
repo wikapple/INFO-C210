@@ -49,11 +49,8 @@ public class Circle2D {
 		return circumference;
 	}
 	
-	/*contains method determines if point at parameter x and y is within circle
-	 * Return true if the distance from this circle's center to the point parameter is less than (or equal to?) this circles radius
-	 */
+	//contains method determines if point at parameter x and y is within circle
 	public boolean contains(double x, double y) {
-		
 		Point2D newPoint = new Point2D(x, y);
 
 		if(circleCenterPoint.distance(newPoint) <= this.radius) {
@@ -63,33 +60,30 @@ public class Circle2D {
 		}
 	}
 	
-	/*contains method determines if circle contains the new circle parameter.
-	 * calculates distance from circle center point to the farthest point on another circle
-	 * if total distance is less than this circle's radius, then this ciricle contains the other circle
-	 */
+	//contains method determines if circle contains the new circle parameter.
 	public boolean contains(Circle2D circle){
-		
+		//greatest distance from this.circle to the farthest away point of the new circle parameter
 		double distance = circleCenterPoint.distance(circle.getCircleCenterPoint()) + circle.radius;
 		
+		//if the distance is greater than this.radius, this circle does not contain the circle parameter
+		//if the distance is less than or equal to this.radius, this circle does contain the circle parameter
 		if(distance <= this.radius){
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
-	/*overlaps method determines if this circle and another circle overlap
-	 * Calculates distance between this circle center and another circle's center
-	 * if the sum of their radii is greater than the distance, and if one circle does NOT contain the other, then they overlap.
-	 */
+	//overlaps method checks if this circle another circle overlap.
 	public boolean overlaps(Circle2D circle) {
-		
+		//distance between the center of both circles:
 		double distance = circleCenterPoint.distance(circle.getCircleCenterPoint());
 		
+		//if the sum of both radii is greater than the distance, and this one does not contain the other, then they overlap:
 		if(this.radius + circle.radius > distance && !contains(circle) && !circle.contains(this)) {
 			return true;
 		}else {
 			return false;
 		}
+		
 	}
 }
