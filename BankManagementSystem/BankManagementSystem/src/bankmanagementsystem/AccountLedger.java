@@ -1,4 +1,5 @@
 package bankmanagementsystem;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 class AccountLedger {
@@ -23,7 +24,7 @@ class AccountLedger {
 		return this.numberOfCreatedAccounts;
 	}
 	
-	public boolean addCheckingAccount(double initialDeposit, int customerID, String customerName){
+	public boolean addCheckingAccount(BigDecimal initialDeposit, int customerID, String customerName){
 		int accountNumber = this.numberOfCreatedAccounts +1;		
 		CheckingAccount newCheckingAccount = new CheckingAccount(accountNumber, initialDeposit, customerID, customerName);
 		Accounts.add(newCheckingAccount);
@@ -31,14 +32,14 @@ class AccountLedger {
 		return true;
 	}
 	
-	public boolean addGoldAccount(double initialDeposit, int customerID, String customerName) {
+	public boolean addGoldAccount(BigDecimal initialDeposit, int customerID, String customerName) {
 		int accountNumber = this.numberOfCreatedAccounts +1;		
 		GoldAccount newGoldAccount = new GoldAccount(accountNumber, initialDeposit, customerID, customerName);
 		Accounts.add(newGoldAccount);
 		this.numberOfCreatedAccounts++;
 		return true;
 	}
-	public boolean addRegularAccount(double initialDeposit, int customerID, String customerName) {
+	public boolean addRegularAccount(BigDecimal initialDeposit, int customerID, String customerName) {
 		int accountNumber = this.numberOfCreatedAccounts +1;		
 		RegularAccount newRegularAccount = new RegularAccount(accountNumber, initialDeposit, customerID, customerName);
 		Accounts.add(newRegularAccount);
@@ -46,7 +47,7 @@ class AccountLedger {
 		return true;
 	}
 	
-	public boolean depositFunds(int accountNumber, double depositAmount) {
+	public boolean depositFunds(int accountNumber, BigDecimal depositAmount) {
 		int index = this.getIndexOfAccount(accountNumber);
 		if(index != -1) {
 			if(Accounts.get(index).depositFunds(depositAmount)) {
@@ -57,7 +58,7 @@ class AccountLedger {
 		return false;
 	}
 	
-	public boolean withdrawFunds(int accountNumber, double withdrawAmount) {
+	public boolean withdrawFunds(int accountNumber, BigDecimal withdrawAmount) {
 		int index = this.getIndexOfAccount(accountNumber);
 		if(index != -1) {
 			if(Accounts.get(index).withdrawFunds(withdrawAmount)) {
@@ -91,10 +92,10 @@ class AccountLedger {
 		}
 	}
 	
-	public double sumOfAccounts() {
-		double sum = 0;
+	public BigDecimal sumOfAccounts() {
+		BigDecimal sum = new BigDecimal(0);
 		for (Account thisAccount : Accounts) {
-			sum += thisAccount.getBalance();
+			sum.add(thisAccount.getBalance());
 		}
 		return sum;
 	}
@@ -103,8 +104,8 @@ class AccountLedger {
 		return Accounts.size();
 	}
 	
-	public double getAverageValue() {
-		return this.sumOfAccounts() / this.getNumberOfAccounts();
+	public BigDecimal getAverageValue() {
+		return this.sumOfAccounts().divide(new BigDecimal(this.getNumberOfAccounts()));
 	}
 	
 	public Account getLargestValue() {	
@@ -115,7 +116,7 @@ class AccountLedger {
 			
 			for(int i = 1; i < Accounts.size(); i ++) {
 				
-				if(largestAccount.getBalance() < Accounts.get(i).getBalance()){
+				if(largestAccount.getBalance().compareTo(Accounts.get(i).getBalance()) < 1){
 					largestAccount = Accounts.get(i);
 				}
 			}
@@ -132,7 +133,7 @@ class AccountLedger {
 		
 		for (Account thisAccount : Accounts) {
 			
-			if(thisAccount.getBalance() <= 0) {
+			if(thisAccount.getBalance().compareTo(new BigDecimal(0)) < 1) {
 				zeroBalanceAccounts.add(thisAccount);
 			}
 		}

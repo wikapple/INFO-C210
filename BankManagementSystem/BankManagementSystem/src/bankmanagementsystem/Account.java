@@ -1,16 +1,19 @@
 package bankmanagementsystem;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 abstract class Account {
 	//Data Fields
 	private int accountNumber;
-	private double balance;
+	private BigDecimal balance;
 	private int customerID;
 	private String customerName;
 	
 	//Constructors
-	Account(int accountNumber, double initialDeposit, int customerID, String customerName){
+	Account(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName){
 		this.accountNumber = accountNumber;
-		this.balance = initialDeposit;
+		this.balance = new BigDecimal(initialDeposit.toString());
 		this.customerID = customerID;
 		this.customerName = customerName;
 	}
@@ -19,8 +22,8 @@ abstract class Account {
 		return this.accountNumber;
 	}
 	
-	public double getBalance() {
-		return this.balance;
+	public BigDecimal getBalance() {
+		return this.balance.setScale(2, RoundingMode.HALF_UP);
 	}
 	public int getCustomerID() {
 		return this.customerID;
@@ -30,8 +33,17 @@ abstract class Account {
 	}
 	
 	//setters
+	public void setBalance(BigDecimal newBalance) {
+		this.balance = new BigDecimal(newBalance.toString());
+	}
+	
+	public void setBalance(int newBalance) {
+		this.balance = new BigDecimal(newBalance);
+	}
+	
 	public void setBalance(double newBalance) {
-		this.balance = newBalance;
+		this.balance = new BigDecimal(newBalance);
+		this.balance.setScale(2, RoundingMode.HALF_UP);
 	}
 	
 	public void setCustomerID(int newCustomerID) {
@@ -41,23 +53,21 @@ abstract class Account {
 		this.customerName = newName;
 	}
 	
-	public boolean depositFunds(double depositAmount) {
-		if(depositAmount > 0) {
-		this.balance += depositAmount;
+	public boolean depositFunds(BigDecimal depositAmount) {
+		if(depositAmount.compareTo(new BigDecimal(0)) > 0) {
+		this.balance = this.balance.add(depositAmount);
 		return true;
 		}else {
 			return false;
 		}
 	}
 	
-	public boolean withdrawFunds(double withdrawAmount) {
-		if(withdrawAmount <= 0) {
-			return false;
-		}else if(withdrawAmount > this.balance) {
-			return false;
-		}else {
-			this.balance -= withdrawAmount;
+	public boolean withdrawFunds(BigDecimal withdrawAmount) {
+		if(withdrawAmount.compareTo(this.balance) <= 0) {
+			this.balance = this.balance.subtract(withdrawAmount);
 			return true;
+		}else {
+			return false;
 		}
 	}
 	
@@ -67,7 +77,7 @@ abstract class Account {
 	
 	@Override
 	public String toString() {
-		String value = "Account Number: " + this.accountNumber + "\tAccount Balance: " + this.balance;
+		String value = "Account Number: " + this.accountNumber + "\tAccount Balance: " + this.balance.setScale(2, RoundingMode.HALF_UP);
 		value += "\nCustomer ID: " + this.customerID + "\tCustomer Name: " + this.customerName + "\n";
 		return value;
 	}

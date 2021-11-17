@@ -1,10 +1,12 @@
 package bankmanagementsystem;
 
+import java.math.BigDecimal;
+
 class GoldAccount extends Account{
 	//Data Fields
 	private double interestRate;
 	
-	public GoldAccount(int accountNumber, double initialDeposit, int customerID, String customerName) {
+	public GoldAccount(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName) {
 		super(accountNumber, initialDeposit, customerID, customerName);
 		this.interestRate = 0.05;
 	}
@@ -17,7 +19,7 @@ class GoldAccount extends Account{
 	@Override
 	public void monthReset() {
 		double monthlyInterest = this.interestRate / 12;
-		double earnedInterest = this.getBalance() * monthlyInterest;
+		BigDecimal earnedInterest = this.getBalance().multiply(new BigDecimal(monthlyInterest));
 		this.depositFunds(earnedInterest);
 	}
 

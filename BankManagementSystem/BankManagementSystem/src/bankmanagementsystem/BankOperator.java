@@ -1,4 +1,6 @@
 package bankmanagementsystem;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 class BankOperator {
@@ -69,7 +71,9 @@ class BankOperator {
 	private void createCheckingAccount() {
 		String customerName = UserInput.enterName("Enter customer's name");
 		int customerID = UserInput.enterNumber("Enter customer ID", 1, 9999999);
-		double initialDeposit = (double)UserInput.enterNumber("Enter initial deposit value", 0, 9999999);
+		double initialDepositAsDouble = (double)UserInput.enterNumber("Enter initial deposit value", 0, 9999999);
+		BigDecimal initialDeposit = new BigDecimal(initialDepositAsDouble);
+		initialDeposit.setScale(2, RoundingMode.HALF_UP);
 		
 		if(bankLedger.addCheckingAccount(initialDeposit, customerID, customerName)) {
 			System.out.println("Account created");
@@ -84,7 +88,9 @@ class BankOperator {
 	private void createGoldAccount() {
 		String customerName = UserInput.enterName("Enter customer's name");
 		int customerID = UserInput.enterNumber("Enter customer ID", 1, 9999999);
-		double initialDeposit = (double)UserInput.enterNumber("Enter initial deposit value", 0, 9999999);
+		double initialDepositAsDouble = (double)UserInput.enterNumber("Enter initial deposit value", 0, 9999999);
+		BigDecimal initialDeposit = new BigDecimal(initialDepositAsDouble);
+		initialDeposit.setScale(2, RoundingMode.HALF_UP);
 		
 		if(bankLedger.addGoldAccount(initialDeposit, customerID, customerName)) {
 			System.out.println("Account created");
@@ -98,7 +104,9 @@ class BankOperator {
 	private void createRegularAccount() {
 		String customerName = UserInput.enterName("Enter customer's name");
 		int customerID = UserInput.enterNumber("Enter customer ID", 1, 9999999);
-		double initialDeposit = (double)UserInput.enterNumber("Enter initial deposit value", 0, 9999999);
+		double initialDepositAsDouble = (double)UserInput.enterNumber("Enter initial deposit value", 0, 9999999);
+		BigDecimal initialDeposit = new BigDecimal(initialDepositAsDouble);
+		initialDeposit.setScale(2, RoundingMode.HALF_UP);
 		
 		if(bankLedger.addRegularAccount(initialDeposit, customerID, customerName)) {
 			System.out.println("Account created");
@@ -119,7 +127,9 @@ class BankOperator {
 		
 		//Choose deposit amount
 		
-		double depositAmount = (double)UserInput.enterNumber("Enter a deposit amount", 1, 999999);
+		double depositAmountAsDouble = (double)UserInput.enterNumber("Enter a deposit amount", 1, 999999);
+		BigDecimal depositAmount = new BigDecimal(depositAmountAsDouble);
+		depositAmount.setScale(2, RoundingMode.HALF_UP);
 		//desposit cash
 		
 		if(bankLedger.depositFunds(thisAccount.getAccountNumber(), depositAmount)) {
@@ -140,7 +150,9 @@ class BankOperator {
 		}
 		
 		//Choose deposit amount
-		double withdrawAmount = (double)UserInput.enterNumber("Enter a withdraw amount", 1, 999999);
+		double withdrawAmountAsDouble = (double)UserInput.enterNumber("Enter a withdraw amount", 1, 999999);
+		BigDecimal withdrawAmount = new BigDecimal(withdrawAmountAsDouble);
+		withdrawAmount.setScale(2, RoundingMode.HALF_UP);
 		//withdraw cash
 		
 		if(bankLedger.withdrawFunds(thisAccount.getAccountNumber(), withdrawAmount)) {
@@ -194,7 +206,7 @@ class BankOperator {
 		Account thisAccount = null;
 		do {
 			System.out.println("\t\tSearch Options:");
-			int select = UserInput.enterNumber("1: Search by account number\n2: Search by customer name\n3: Search by customer ID\n0: Exit Search", 1, 3);
+			int select = UserInput.enterNumber("1: Search by account number\n2: Search by customer name\n3: Search by customer ID\n0: Exit Search", 0, 3);
 			
 			switch (select){
 				
