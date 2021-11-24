@@ -23,7 +23,8 @@ public class UserInput {
 	}
 	
 	/*divider moves Scanner to next line*/
-	public static void divider() {
+	public static void divder() {
+		System.out.println();
 		in.nextLine();
 	}
 	
@@ -80,6 +81,7 @@ public class UserInput {
 				response = in.nextInt();
 				if(response <= max && response >= min) {
 					numberLoop = false;
+					//in.next();
 					return response;
 				}else {
 					System.out.println("Input of " + response + "out of range");
@@ -88,7 +90,7 @@ public class UserInput {
 				System.out.println("" + in.next() + "is not an integer");
 			}
 		}while(numberLoop);
-	
+	//in.next();
 	return -1;
 	}
 }

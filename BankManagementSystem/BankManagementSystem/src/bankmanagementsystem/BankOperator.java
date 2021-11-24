@@ -31,7 +31,7 @@ class BankOperator {
 		
 		do {
 			System.out.println("Press enter to continue to main menu..."); /*User must press enter to continue, output gets cluttered without a divider*/
-			UserInput.divider();
+			UserInput.divder();
 			printMainMenu(); /*Print the menu*/
 			int response = UserInput.enterNumber("Enter a number for a corresponding menu option", 0, 9); /*Get menu selection from user, run it through switch board*/
 			switch(response) {
@@ -102,8 +102,7 @@ class BankOperator {
 		}else {
 			System.out.println("Error, account not created");
 		}
-		System.out.println();
-		UserInput.divider();
+		UserInput.divder();
 	}
 	
 	
@@ -121,8 +120,7 @@ class BankOperator {
 		}else {
 			System.out.println("Error, account not created");
 		}
-		System.out.println();
-		UserInput.divider();
+		UserInput.divder();
 	}
 
 	
@@ -140,8 +138,8 @@ class BankOperator {
 		}else {
 			System.out.println("Error, account not created");
 		}
-		System.out.println();
-		UserInput.divider();
+		
+		UserInput.divder();
 	}
 	
 	
@@ -167,8 +165,8 @@ class BankOperator {
 		}else {
 			System.out.println("Deposit failed");
 		}
-		System.out.println();
-		UserInput.divider();
+
+		UserInput.divder();
 	}
 	
 	
@@ -194,8 +192,7 @@ class BankOperator {
 		}else {
 			System.out.println("withdraw failed");
 		}
-		System.out.println();
-		UserInput.divider();
+		UserInput.divder();
 	}
 	
 	
@@ -218,16 +215,16 @@ class BankOperator {
 		/*Remove account*/
 		if(bankLedger.removeAccount(thisAccount.getAccountNumber())) {
 			System.out.println("Account removed");
-			System.out.println();
-			UserInput.divider();
+			
+			UserInput.divder();
 			return;
 			
 		}else {
 			System.out.println("Removal failed");
 		}
 		System.out.println("Removal failed");
-		System.out.println();
-		UserInput.divider();
+		
+		UserInput.divder();
 	}
 	
 	
@@ -236,17 +233,14 @@ class BankOperator {
 	 */
 	private void applyEndOfMonth() {
 		/*Double check if user is certain they want to apply changes*/
-		UserInput.divider();
-		
-		/*Apply monthly adjustment*/
 		if(UserInput.yesOrNoQuestion("Are you sure you want to apply end of month updates? Action cannot be reversed.")) {
 			bankLedger.monthReset();
 			System.out.println("End of month account updates applied");
 		}else {
 			System.out.println("End of month updates cancelled");
 		}
-		System.out.println();
-		UserInput.divider();
+		
+		UserInput.divder();
 	}
 	
 	
@@ -264,8 +258,8 @@ class BankOperator {
 		}
 		
 		System.out.println(stats);
-		System.out.println();
-		UserInput.divider();
+		
+		UserInput.divder();
 	}
 	
 	
@@ -284,7 +278,7 @@ class BankOperator {
 				/*Search by account number*/
 				case 1:
 					int accountNumber = UserInput.enterNumber("Enter account number", 1, 999999);
-					UserInput.divider();
+					UserInput.divder();
 					thisAccount = bankLedger.searchByAccountNumber(accountNumber);
 					
 					if(thisAccount != null) {
@@ -301,7 +295,6 @@ class BankOperator {
 				/*Search by customer name*/
 				case 2:
 					String name = UserInput.enterName("Enter customer name");
-					UserInput.divider();
 					ArrayList<Account> searchResult = bankLedger.searchAccountsByCustomerName(name);
 					
 					if(searchResult.size() > 0) {
@@ -322,7 +315,7 @@ class BankOperator {
 				/*Search by customer ID*/
 				case 3:
 					int customerID = UserInput.enterNumber("Enter customer ID", 1, 9999999);
-					UserInput.divider();
+					UserInput.divder();
 					ArrayList<Account> searchResult2 = bankLedger.searchAccountsByCustomerID(customerID);
 					
 					if(searchResult2.size() > 0) {
@@ -370,7 +363,7 @@ class BankOperator {
 		
 		/*User selects an account*/
 		int selection = UserInput.enterNumber("Enter the number that corresponds with the account you want to use (or press 0 to quit)", 1, Accounts.size());
-		UserInput.divider();
+		UserInput.divder();
 		if(selection > 0) {
 			return Accounts.get(selection-1); /*Return the user selection*/
 		}else {
