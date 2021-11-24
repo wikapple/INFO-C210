@@ -1,16 +1,34 @@
 package bankmanagementsystem;
+
 import java.util.Scanner;
 
+/*
+ * UserInput Class
+ * Cannot be instantiated, list of static methods and the only Scanner in project
+ * Methods that get all user input
+ * 
+ * Author: William Applegate
+ * Class: INFO-C210
+ */
+
 public class UserInput {
+	
+	
+	/*Data Field (Scanner)*/
 	static private Scanner in = new Scanner(System.in);
 	
+	
+	/*private constructor*/
 	private UserInput() {
-		
 	}
-	public static void divder() {
-
+	
+	/*divider moves Scanner to next line*/
+	public static void divider() {
 		in.nextLine();
 	}
+	
+	
+	/*Get a yes or no answer from user*/
 	public static boolean yesOrNoQuestion(String instructions) {
 		System.out.println(instructions);
 		String answer;
@@ -33,6 +51,8 @@ public class UserInput {
 		return false;
 	}
 	
+	
+	/*Get a name(String) from the user*/
 	public static String enterName(String instructions) {
 		String name;
 		boolean nameLoop = true;
@@ -48,6 +68,8 @@ public class UserInput {
 		return name;
 	}
 	
+	
+	/*Get a number(int) from the user*/
 	public static int enterNumber(String instructions, int min, int max) {
 		int response;
 		boolean numberLoop = true;

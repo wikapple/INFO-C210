@@ -2,19 +2,30 @@ package bankmanagementsystem;
 
 import java.math.BigDecimal;
 
+
+/* CheckingAccount Class
+ * Extends Account, applies checking account specifications
+ * 
+ * Author: William Applegate
+ * Class: INFO-C210
+ */
 class CheckingAccount extends Account {
-	//data Fields
+	
+	
+	/*Data Fields*/
 	private int totalMonthlyTransactions;
 	private double transactionFee;
 
-	//Constructor
+	
+	/*Constructor*/
 	CheckingAccount(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName){
 		super(accountNumber, initialDeposit, customerID, customerName);
 		this.transactionFee = 3;
 		this.totalMonthlyTransactions = 0;
 	}
+
 	
-	//Accessor
+	/*Getters*/
 	public int getMonthlyTransactionTotal() {
 		return this.totalMonthlyTransactions;
 	}
@@ -23,6 +34,11 @@ class CheckingAccount extends Account {
 		return this.transactionFee;
 	}
 	
+	
+	/* Deposit method
+	 * Applies transaction fee specification to parent method
+	 */
+	@Override
 	public boolean depositFunds(BigDecimal depositAmount){
 		if(totalMonthlyTransactions <3) {
 			if(super.depositFunds(depositAmount)){
@@ -35,11 +51,14 @@ class CheckingAccount extends Account {
 				return true;
 			}
 		}
-		
-		return false;
-		
+		return false;	
 	}
 	
+	
+	/* Withdraw method
+	 * Applies transaction fee specification to parent method
+	 */
+	@Override
 	public boolean withdrawFunds(BigDecimal withdrawAmount) {
 		if(totalMonthlyTransactions <3) {
 			if(super.withdrawFunds(withdrawAmount)){
@@ -56,11 +75,17 @@ class CheckingAccount extends Account {
 		return false;
 	}
 	
+	
+	/* Apply monthly adjustments
+	 * Overrides parent method to reset monthly transactions to 0
+	 */
 	@Override
 	public void monthReset() {
 		this.totalMonthlyTransactions = 0;
 	}
 	
+	
+	/*toString method*/
 	@Override
 	public String toString() {
 		String value = "\t\tChecking Account\nFee per transaction: " + this.transactionFee;

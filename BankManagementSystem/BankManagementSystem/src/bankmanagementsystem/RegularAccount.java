@@ -2,19 +2,30 @@ package bankmanagementsystem;
 
 import java.math.BigDecimal;
 
+
+/* RegularAccount Class
+ * Extends Account, applies Regular Account specifications
+ * 
+ * Author: William Applegate
+ * Class: INFO-C210
+ */
 class RegularAccount extends Account{
-	//data fields
+	
+	
+	/*data fields*/
 	private double interestRate;
 	private BigDecimal monthlyFee;
 	
-	//constructor
+	
+	/*constructor*/
 	RegularAccount(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName){
 		super(accountNumber, initialDeposit, customerID, customerName);
 		this.interestRate = 0.06;
 		this.monthlyFee = new BigDecimal("10.00");
 	}
 	
-	//Accessor
+	
+	/*Getters*/
 	public double getInterestRate() {
 		return this.interestRate;
 	}
@@ -22,6 +33,10 @@ class RegularAccount extends Account{
 		return this.monthlyFee;
 	}
 	
+	
+	/* Apply end of month adjustments
+	 * Add monthly interest and withdraw monthly fee
+	 */
 	@Override
 	public void monthReset() {
 		double monthlyInterestRate = this.interestRate / 12;
@@ -32,6 +47,9 @@ class RegularAccount extends Account{
 			this.setBalance(0);
 		}
 	}
+	
+	
+	/*toString method*/
 	@Override
 	public String toString() {
 		String value = "\t\tRegular Account\nInterest Rate: " + this.interestRate + "\tMonthly Fee: " + this.monthlyFee + "\n";

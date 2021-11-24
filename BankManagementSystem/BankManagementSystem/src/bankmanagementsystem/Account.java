@@ -3,21 +3,31 @@ package bankmanagementsystem;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/* Account Class
+ * Abstract class with common account methods and data fields
+ * 
+ * Author: William Applegate
+ * Class: INFO-C210
+ */
 abstract class Account {
-	//Data Fields
+	
+	/*Data Fields*/
 	private int accountNumber;
 	private BigDecimal balance;
 	private int customerID;
 	private String customerName;
 	
-	//Constructors
+	
+	/*Constructors*/
 	Account(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName){
 		this.accountNumber = accountNumber;
 		this.balance = new BigDecimal(initialDeposit.toString());
 		this.customerID = customerID;
 		this.customerName = customerName;
 	}
-	//Accessors
+	
+	
+	/*Getters*/
 	public int getAccountNumber(){
 		return this.accountNumber;
 	}
@@ -32,7 +42,8 @@ abstract class Account {
 		return this.customerName;
 	}
 	
-	//setters
+	
+	/*setters*/
 	public void setBalance(BigDecimal newBalance) {
 		this.balance = new BigDecimal(newBalance.toString());
 	}
@@ -53,6 +64,10 @@ abstract class Account {
 		this.customerName = newName;
 	}
 	
+	
+	/* Deposit method
+	 * Returns true if successful, false if failed
+	 */
 	public boolean depositFunds(BigDecimal depositAmount) {
 		if(depositAmount.compareTo(new BigDecimal(0)) > 0) {
 		this.balance = this.balance.add(depositAmount);
@@ -62,6 +77,10 @@ abstract class Account {
 		}
 	}
 	
+	
+	/* Withdraw method
+	 * Returns true if successful, false if failed
+	 */
 	public boolean withdrawFunds(BigDecimal withdrawAmount) {
 		if(withdrawAmount.compareTo(this.balance) <= 0) {
 			this.balance = this.balance.subtract(withdrawAmount);
@@ -71,10 +90,14 @@ abstract class Account {
 		}
 	}
 	
+	
+	/*Month Reset method*/
 	public void monthReset() {
 		
 	}
 	
+	
+	/*toString method*/
 	@Override
 	public String toString() {
 		String value = "Account Number: " + this.accountNumber + "\tAccount Balance: " + this.balance.setScale(2, RoundingMode.HALF_UP);
@@ -82,6 +105,8 @@ abstract class Account {
 		return value;
 	}
 	
+	
+	/*equals method*/
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Account)) {
