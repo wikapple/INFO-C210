@@ -54,7 +54,6 @@ abstract class Account {
 	
 	public void setBalance(double newBalance) {
 		this.balance = new BigDecimal(newBalance);
-		this.balance.setScale(2, RoundingMode.HALF_UP);
 	}
 	
 	public void setCustomerID(int newCustomerID) {
@@ -82,9 +81,20 @@ abstract class Account {
 	 * Returns true if successful, false if failed
 	 */
 	public boolean withdrawFunds(BigDecimal withdrawAmount) {
+		
+		/*if able to complete withdraw*/
 		if(withdrawAmount.compareTo(this.balance) <= 0) {
 			this.balance = this.balance.subtract(withdrawAmount);
 			return true;
+		
+		/*If able to partially complete withdraw less than amount requested*/
+		}else if(this.balance.compareTo(new BigDecimal("0")) > 0){
+			System.out.println("Withdraw amount greater than balance");
+			System.out.println("Withdrawing balance of $" + this.balance.setScale(2, RoundingMode.HALF_UP));
+			this.setBalance(new BigDecimal("0.00"));
+			return true;
+		
+		/*If no withdraw is possible*/
 		}else {
 			return false;
 		}

@@ -36,7 +36,8 @@ public class UserInput {
 		do {
 		System.out.println("(Enter y or n): ");
 		answer = in.nextLine();
-		
+		/*Test:*/
+		System.out.println("Scanner picked up this answer: " + answer);
 		answer = answer.toUpperCase();
 		
 		if(answer.equals("Y")||answer.equals("YES")){
