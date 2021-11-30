@@ -29,6 +29,15 @@ class GoldAccount extends Account{
 		return this.interestRate;
 	}
 
+
+	/* Override withdraw method to allow unlimited withdraws
+	 * regardless of balance for Gold Account.
+	 */
+	@Override
+	public boolean withdrawFunds(BigDecimal withdrawAmount) {
+		this.setBalance(this.getBalance().subtract(withdrawAmount));
+		return true;
+	}
 	
 	/* Apply end of month adjustments
 	 * Adds monthly interest to gold account balance
