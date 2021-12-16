@@ -9,11 +9,13 @@ import java.util.ArrayList;
  * Responsible for holding ArrayList of all accounts and manipulating the data
  * BankOperator Class calls on this class, this class then calls on Accounts held within it if applicable
  * 
+ * Dual purpose class to allow user access, but protect data from passing reference variables
+ * 
  * Author: William Applegate
  * Class: INFO-C210
  */
 
-	class AccountLedger implements Copeable<AccountLedger>{
+	class AccountLedger{
 	
 	/*Data Fields*/
 	private String ledgerName;
@@ -329,13 +331,6 @@ import java.util.ArrayList;
 		return copyOfLedger;
 	}
 	
-	@Override
-	public AccountLedger copy() {
-		ArrayList<Account> copyOfAccounts = copyMainAccountList();
-		
-		AccountLedger ledgerCopy = new AccountLedger("ledgerCopy", copyOfAccounts);
-		return ledgerCopy;
-	}
 	
 	/*Account Ledger toString method*/
 	@Override

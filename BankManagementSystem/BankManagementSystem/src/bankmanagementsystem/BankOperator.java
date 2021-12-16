@@ -18,7 +18,7 @@ public class BankOperator {
 	/*Data Fields*/
 	
 	/*Constructor*/
-	BankOperator(String employeeName, String employeePassword){
+	public BankOperator(String employeeName, String employeePassword){
 		this.employeeName = employeeName;
 		this.employeePassword = employeePassword;
 	}

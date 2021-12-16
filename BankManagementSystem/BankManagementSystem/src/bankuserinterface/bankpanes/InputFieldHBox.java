@@ -5,12 +5,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
+/*Quality of life class for repetitive textfield creation
+ * methods provide easier access to numeric values
+ *
+ * Author: William Applegate
+ * INFO-C210
+ */
 public class InputFieldHBox extends HBox{
-private Label descriptionLabel; 
-private TextField textField;
+	/*Data Fields*/
+	private Label descriptionLabel; 
+	private TextField textField;
 	
+	/*Constructor*/
 	public InputFieldHBox(double padBetweenNodes, String labelText, int fontSize){
+		/*call the super constructor to get assign padding between HBox Nodes*/
 		super(padBetweenNodes);
+		
 		descriptionLabel = new Label(labelText);
 		descriptionLabel.setFont(new Font("Arial Bold", fontSize));
 		
@@ -19,13 +29,14 @@ private TextField textField;
 		this.getChildren().addAll(descriptionLabel, textField);	
 	}
 	
+	/*getters*/
 	TextField getTextField() {
 		return this.textField;
 	}
 	Label getLabel() {
 		return descriptionLabel;
 	}
-	
+	/*Get int value of textfield if possible, otherwise return 0*/
 	int getIntValue() {
 		int fieldAsInt;
 		try {
@@ -36,6 +47,7 @@ private TextField textField;
 			return fieldAsInt;
 	}
 	
+	/*Get long value of textfield if possible, otherwise return 0*/
 	long getLongValue() {
 		long fieldAsInt;
 		try {
@@ -46,7 +58,7 @@ private TextField textField;
 			return fieldAsInt;
 	}
 	
-	
+	/*Setters*/
 	public void setChildPrefHeight(double prefHeight){
 		setLabelPrefHeight(prefHeight);
 		setTextFieldPrefHeight(prefHeight);

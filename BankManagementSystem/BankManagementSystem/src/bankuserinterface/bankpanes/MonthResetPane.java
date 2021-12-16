@@ -10,19 +10,27 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+/*
+ * Pane used to apply monthly adjustments
+ * Two button Pane for checking if user is sure they want to apply adjustment
+ * 
+ * Author: William Applegate
+ * INFO-C210 
+ */
 public class MonthResetPane extends BankBasePane{
-	
+	/*Data Fields*/
 	private Button confirmBtn;
 	private Button cancelBtn;
 	private VBox centerPane;
 	
+	/*Constructor*/
 	public MonthResetPane(){
 		super("Month Reset", "Applies monthly adjustments to all accounts");
 		
 		setupCenterPane();
 		
 	}
-	
+	/*Sets up center pane*/
 	private void setupCenterPane() {
 		
 		centerPane = new VBox(20);
@@ -48,6 +56,7 @@ public class MonthResetPane extends BankBasePane{
 		this.mainBorderPane.setCenter(this.centerPane);
 	}
 	
+	/*Getters*/
 	public Button getConfirmBtn() {
 		return this.confirmBtn;
 	}

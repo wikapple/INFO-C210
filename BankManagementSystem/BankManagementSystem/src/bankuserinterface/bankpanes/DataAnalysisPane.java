@@ -13,43 +13,53 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+/*
+ * Data Analysis Pane used to show bank data to the user
+ * BankData object created specifically to be accessed by this view 
+ * 
+ * Author: William Applegate
+ * INFO-C210
+ */
 public class DataAnalysisPane extends BankBasePane{
+	/*Data Fields*/
 	private Button returnToMenuBtn;
 	private BankData bankData;
-	private Font mainFont = new Font("Arial Bold", 14);
+	private static Font mainFont = new Font("Arial Bold", 14);
 	private HBox mainPane;
 	
-	
+	/*Constructor*/
 	public DataAnalysisPane(BankData bankData){
+		/*set Title, Sub-Title*/
 		super("Bank Data Analysis", "Shows Synapsis of Bank Financial Data");
 		
 		this.bankData = bankData;
 		
+		/*Formatting this pane*/
 		this.mainPane = new HBox(10);
 		mainPane.setAlignment(Pos.TOP_CENTER);
 		mainPane.getChildren().addAll(this.getLeftPane(), this.getCenterPane(), this.getRightPane());
 		
+		/*Setting up bottom button to return to menu*/
 		StackPane bottomPane = new StackPane();
 		bottomPane.setPadding(new Insets(10,10,40,10));
 		bottomPane.setAlignment(Pos.TOP_CENTER);
 		this.returnToMenuBtn = BankFXController.createButton("Return to Main Menu", "blue", 20);
 		returnToMenuBtn.setAlignment(Pos.CENTER);
 		returnToMenuBtn.setTextAlignment(TextAlignment.CENTER);
-		
 		bottomPane.getChildren().add(returnToMenuBtn);
+		
+		/*Adding child panes*/
 		this.mainBorderPane.setBottom(bottomPane);
-		
 		this.mainBorderPane.setCenter(mainPane);
-		
-		
 	}
 	
+	/*Getter*/
 	public Button getReturnToMenuBtn() {
 		return this.returnToMenuBtn;
 	}
 	
-	
-	private Label createLabel(String text) {
+	/*Basic label creation method*/
+	private static Label createLabel(String text) {
 		Label newLabel = new Label(text);
 		newLabel.setFont(mainFont);
 		newLabel.setPrefHeight(15);
@@ -61,6 +71,7 @@ public class DataAnalysisPane extends BankBasePane{
 		return newLabel;
 	}
 	
+	/*Set up the left pane to show basic bank data values directly in Label nodes*/
 	private VBox getLeftPane() {
 		
 		Label sumOfAccountsLabel = createLabel("Sum of All Accounts");
@@ -93,6 +104,7 @@ public class DataAnalysisPane extends BankBasePane{
 		
 	}
 	
+	/*Create center pane that will show account details for hte largest account in a VBox*/
 	private VBox getCenterPane() {
 		Label largestAccountLabel = createLabel("Largest Account:");
 		largestAccountLabel.setAlignment(Pos.CENTER);
@@ -112,6 +124,7 @@ public class DataAnalysisPane extends BankBasePane{
 		
 	}
 	
+	/*Set up right pane which will show a list of accounts with zero balance*/
 	private VBox getRightPane() {
 		
 		ArrayList<Account> accountsWith0Balance = bankData.getAccountsWith0Balance();

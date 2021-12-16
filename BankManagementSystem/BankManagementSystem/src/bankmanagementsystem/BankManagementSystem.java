@@ -3,16 +3,26 @@ package bankmanagementsystem;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-
+/*
+ * Bank Management System is the hub between GUI, Bank Operators, and the Accounts
+ * All requests to manipulate of access data go through bank management system
+ * Further additions such as a read-write ability would expand off of this class
+ * 
+ * Author: William Applegate
+ * INFO-C210
+ * */
 	public class BankManagementSystem {
+	/*Data Fields*/
 	private ArrayList<BankOperator> employees;
 	private AccountLedger bankLedger;
 	
+	/*Constructor*/
 	public BankManagementSystem(){
 		employees = new ArrayList<BankOperator>();
 		bankLedger  = new AccountLedger();
 	}
 	
+	/*Checks if a sign in attempt is successful*/
 	public boolean employeeSignIn(String nameInput, String passwordInput) {
 		
 			for(BankOperator employee: employees) {
@@ -30,6 +40,7 @@ import java.util.ArrayList;
 			return false;
 		}
 	
+	/*Get index of employee in global variable*/
 	private int getEmployeeIndex(String nameInput) {
 		for(int index = 0; index < employees.size(); index ++) {
 			String currentName = employees.get(index).getEmployeeName();
@@ -52,7 +63,7 @@ import java.util.ArrayList;
 			return false;
 		}
 	}
-	
+	/*Get a BankOperator object by their name*/
 	public BankOperator getEmployee(String employeeName) {
 		if(getEmployeeIndex(employeeName) > -1) {
 			return employees.get(getEmployeeIndex(employeeName));

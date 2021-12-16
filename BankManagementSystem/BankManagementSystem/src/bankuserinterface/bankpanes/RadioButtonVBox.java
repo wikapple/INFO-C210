@@ -10,11 +10,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-
+/*
+ * Pane of vertical radio button toggle group class
+ * 
+ * Author: William Applegate
+ * INFO-C210
+ */
 public class RadioButtonVBox extends VBox{
+	/*Data Fields*/
 	private ArrayList<RadioButton> radioButtons = new ArrayList<>();
-	ToggleGroup thisToggle;
+	private ToggleGroup thisToggle;
 	
+	/*Different constructors for different numbers of radio buttons*/
 	RadioButtonVBox(double rbSeparation, String rbOneText, String rbTwoText){
 		super(rbSeparation);
 		this.setPaneFormat();
@@ -34,6 +41,7 @@ public class RadioButtonVBox extends VBox{
 		this.getChildren().addAll(radioButtons);
 		
 	}
+	
 	RadioButtonVBox(double rbSeparation, String rbOneText, String rbTwoText, String rbThreeText){
 		this(rbSeparation, rbOneText, rbTwoText);
 		RadioButton rbThree = new RadioButton(rbThreeText);
@@ -56,8 +64,10 @@ public class RadioButtonVBox extends VBox{
 		this.getChildren().removeAll(radioButtons);
 		this.getChildren().addAll(radioButtons);
 	}
+	/*End Constructors*/
 	
 	
+	/*method to format all radio buttons*/
 	private void setRadioButtonFormats() {
 		radioButtons.forEach(a->{
 			((RadioButton)a).setTextFill(Color.DARKGREEN);
@@ -69,7 +79,8 @@ public class RadioButtonVBox extends VBox{
 			((RadioButton)a).setAlignment(Pos.CENTER);
 		});
 	}
-	
+
+	/*Pane formatting method*/
 	private void setPaneFormat() {
 		this.setPrefHeight(35);
 		this.setPrefWidth(225);
@@ -77,6 +88,7 @@ public class RadioButtonVBox extends VBox{
 		this.setPadding(new Insets(10,10,10,10));
 	}
 	
+	/*Getter gets radio buttons based on their index value in global radioButtons array*/
 	public RadioButton getButton(int btnIndex) {
 		if(radioButtons.size() <= btnIndex) {
 			return null;

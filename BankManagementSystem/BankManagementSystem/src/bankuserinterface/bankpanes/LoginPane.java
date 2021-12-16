@@ -14,8 +14,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/*
+ * Login pane used for account login and account creation windows
+ * 
+ * Author: William Applegate
+ * INFO-C210
+ * 
+ */
 public class LoginPane extends BankBasePane {
 
+	/*Data Fields*/
 	private String title;
 	private Button buttonOne;
 	private Button buttonTwo;
@@ -26,19 +34,17 @@ public class LoginPane extends BankBasePane {
 	private StackPane signInFailurePane;
 	private Button finalReturnToMenuBtn;
 	
+	/*Constructor*/
 	public LoginPane(String title, String subTitle, String buttonOneText, String buttonTwoText, String bottomFailPane){
 		super(title, subTitle);
 		this.title = title;
 		
-		
 		setupCenterLoginPane(buttonOneText, buttonTwoText);
-		
-		
 		
 		setupBottomFailPane(bottomFailPane);
 	}
 	
-
+	/*Getters*/
 	public Button getButtonOne() {
 		return buttonOne;
 	}
@@ -104,6 +110,7 @@ public class LoginPane extends BankBasePane {
 		this.mainBorderPane.setCenter(loginPane);
 	}
 	
+	/*Center pane changes to a success notice if method is called*/
 	public void setupCenterPaneAfterSuccess() {
 		Label successLabel = new Label(this.title + " successful");
 		successLabel.setFont(new Font("Arial Bold", 25));
@@ -137,6 +144,7 @@ public class LoginPane extends BankBasePane {
 		
 	}
 	
+	/*Lets parent controller make fail notice visible if applicable*/
 	public void setFailVisible(boolean value) {
 		this.signInFailurePane.setVisible(value);
 	}

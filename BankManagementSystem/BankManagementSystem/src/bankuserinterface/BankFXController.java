@@ -126,7 +126,7 @@ public class BankFXController {
 		 
 		 this.superStage.setTitle("Bank Management System - " + this.employee.getEmployeeName() + " - Main Menu");
 
-		 MainMenuPane mainMenuPane = new MainMenuPane(this.employee);
+		 MainMenuPane mainMenuPane = new MainMenuPane(this.employee.getEmployeeName());
 		 
 		 /*handle events when menu buttons are pressed
 		  * call on other methods to get next scene and set it 

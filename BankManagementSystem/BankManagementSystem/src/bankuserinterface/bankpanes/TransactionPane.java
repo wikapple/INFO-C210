@@ -12,13 +12,18 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import bankmanagementsystem.*;
 import bankuserinterface.BankFXController;
-
+/*
+ * Transaction Pane for entering transactions both withdraw and deposit
+ * 
+ * Author: William Applegate
+ * INFO-C210
+ */
 public class TransactionPane extends BankBasePane {
+	/*data fields*/
 	private String accountFoundString;
 	private String accountInfoString;
-	boolean accountFound;
+	private boolean accountFound;
 	private long transactionValue;
-	
 	private VBox rightPane;
 	private Account thisAccount;
 	private TransactionForesightPane futurePane;
@@ -28,8 +33,11 @@ public class TransactionPane extends BankBasePane {
 	private boolean isDeposit;
 	private boolean isWithdraw;
 	
+	/*Constructor*/
 	public TransactionPane(BankManagementSystem bankSystem){
+		/*Title, Subtitle*/
 		super("Transactions","Enter information for transaction");
+		/*Formatting/style*/
 		subFont = new Font("Arial", 14);
 		GridPane menu = new GridPane();
 		menu.setVgap(15);
@@ -39,9 +47,9 @@ public class TransactionPane extends BankBasePane {
 		double labelWidth = 125;
 		menu.setPrefHeight(40);
 		menu.setAlignment(Pos.TOP_CENTER);
-		
 		menu.setPadding(new Insets(20,10,10,10));
 		
+		/*Input fields*/
 		InputFieldHBox accountNumberInput = new InputFieldHBox(10, "AccountNumber", 14);
 		accountNumberInput.setChildPrefHeight(menu.getPrefHeight());
 		accountNumberInput.setLabelPrefWidth(labelWidth);
@@ -52,7 +60,7 @@ public class TransactionPane extends BankBasePane {
 
 		accountNumberInput.getLabel().setTextAlignment(TextAlignment.RIGHT);
 		
-
+		/*Label shows whether account is found or not*/
 		Label accountFoundLabel = new Label("Account not found");
 		accountFoundLabel.setPrefWidth(labelWidth);
 		accountFoundLabel.setPrefHeight(menu.getPrefHeight());
@@ -65,6 +73,7 @@ public class TransactionPane extends BankBasePane {
 	
 		accountInformation.setTextAlignment(TextAlignment.LEFT);
 		
+		/*check if account is found every time a key is typed into field. If found, change the corresponding values*/
 		accountNumberInput.getTextField().setOnKeyTyped(c->{
 				int accountNumberInp = accountNumberInput.getIntValue();
 				if(accountNumberInp > 0) {
@@ -97,7 +106,7 @@ public class TransactionPane extends BankBasePane {
 		
 		menu.add(accountNumberInput,0,0);
 		
-		
+		/*Dollar amount input field*/
 		InputFieldHBox dollarAmount = new InputFieldHBox(10, "Dollar Amount", 14);
 		dollarAmount.setChildPrefHeight(menu.getPrefHeight());
 		dollarAmount.setLabelPrefWidth(labelWidth);
@@ -112,11 +121,11 @@ public class TransactionPane extends BankBasePane {
 
 		
 		
-		
+		/*Add transaction menu to the mainBorderPane*/
 		this.mainBorderPane.setCenter(menu);
 		
 		
-		//RightPane setup
+		/*RightPane setup for transaction information*/
 		rightPane = new VBox(10);
 		rightPane.setPadding(new Insets(10,10,10,10));
 		rightPane.setStyle("-fx-background-color: white");
@@ -126,16 +135,16 @@ public class TransactionPane extends BankBasePane {
 				rightPane.setAlignment(Pos.BASELINE_CENTER);
 		rightPane.getChildren().addAll(accountFoundLabel, accountInformation);
 		accountFoundLabel.setPrefWidth(rightPane.getPrefWidth());
-		//accountInformation.setPrefWidth(rightPane.getPrefWidth());
-		//accountInformation.setPrefHeight();
 		
 		this.mainBorderPane.setRight(rightPane);
 		
 		
-		
+		/*LeftPane setup for withdraw/deposit radio button toggle*/
 		this.leftPane = new RadioButtonVBox(25, "Deposit", "Withdraw");
 		leftPane.setAlignment(Pos.TOP_CENTER);
 		this.mainBorderPane.setLeft(leftPane);
+		
+		/*If user makes change to radio button toggle, update the transaction*/
 		leftPane.getButton(0).setOnAction(m ->{
 			this.isDeposit = true;
 			this.isWithdraw = false;
@@ -153,16 +162,15 @@ public class TransactionPane extends BankBasePane {
 		
 		
 		
-		//WORK HERE:
-		//Setting what happens when deposit or withdraw field is entered in.
+
 		
-		
+		/*update transaction everytime a key is typed into dollar amount field*/
 		dollarAmount.getTextField().setOnKeyTyped(a ->{
 		this.transactionValue = Math.abs(dollarAmount.getLongValue());
 		showTransactionPane();
 		});
 		
-		
+		/*Button creation*/
 		this.entryBtn = BankFXController.createButton("Enter Transaction", "green", 14);
 		this.cancelBtn = BankFXController.createButton("Cancel", "red", 14);
 		
@@ -173,6 +181,7 @@ public class TransactionPane extends BankBasePane {
 		
 	}
 	
+	/*show Transacion pane shows transaction information in right pane according to global values*/
 	void showTransactionPane() {
 		try {
 			if(this.futurePane != null) {
@@ -191,16 +200,17 @@ public class TransactionPane extends BankBasePane {
 		}
 	}
 	
+	/*checks if user input is a valid entry*/
 	public boolean isEntryValid() {
 		if(accountFound && (this.transactionValue != 0)) {
 			if((isWithdraw && !isDeposit)||(!isWithdraw && isDeposit)) {
 				return true;
 			}
-		
 		}
 			return false;
 	}
 	
+	/*Getters*/
 	public Button getEnterButton() {
 		return this.entryBtn;
 	}

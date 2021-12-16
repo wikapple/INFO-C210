@@ -26,6 +26,7 @@ public class AccountSearchFieldsPane extends GridPane{
 	/*Constructor*/
 	public AccountSearchFieldsPane(){
 		
+		/*Pane formatting*/
 		this.setVgap(25);
 		this.setAlignment(Pos.TOP_CENTER);
 
@@ -40,6 +41,7 @@ public class AccountSearchFieldsPane extends GridPane{
 		title.setPrefHeight(20);
 		this.add(title, 0, 0);
 		
+		/*Setting up nodes (LLabels and textfields)*/
 		this.accountNumberBox = new InputFieldHBox(1, "Account Number", 14);
 		this.add(accountNumberBox, 0, 1);
 		boxes.add(accountNumberBox);
@@ -60,6 +62,7 @@ public class AccountSearchFieldsPane extends GridPane{
 		this.add(maxValueBox, 0, 5);
 		boxes.add(maxValueBox);
 		
+		/*formatting fields*/
 		boxes.forEach(a->{
 			((InputFieldHBox)a).setChildPrefHeight(15);
 			((InputFieldHBox)a).setLabelPrefWidth(125);
@@ -71,6 +74,7 @@ public class AccountSearchFieldsPane extends GridPane{
 		});
 	}
 
+	/*Getters*/
 	public InputFieldHBox getAccountNumberBox() {
 		return accountNumberBox;
 	}
