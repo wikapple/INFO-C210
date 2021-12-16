@@ -1,17 +1,19 @@
 package bankmanagementsystem;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /*
  * AccountLedger Class
  * Responsible for holding ArrayList of all accounts and manipulating the data
- * BankOperator Class calls on this class, this class calls on Accounts if applicable
+ * BankOperator Class calls on this class, this class then calls on Accounts held within it if applicable
  * 
  * Author: William Applegate
  * Class: INFO-C210
  */
 
-class AccountLedger {
+	class AccountLedger implements Copeable<AccountLedger>{
 	
 	/*Data Fields*/
 	private String ledgerName;
@@ -27,58 +29,72 @@ class AccountLedger {
 		accounts = new ArrayList<>();
 		this.ledgerName = nameOfLedger;
 		this.numberOfCreatedAccounts = 0;
+		
+	}
+	
+	AccountLedger(String nameOfLedger, ArrayList<Account> accountList){
+		accounts = accountList;
+		this.ledgerName = nameOfLedger;
 	}
 	
 	
 	/*Getters*/
-	public String getLedgerName() {
+	String getLedgerName() {
 		return this.ledgerName;
 	}
-	public int getNumberOfAccountsCreated() {
+	int getNumberOfAccountsCreated() {
 		return this.numberOfCreatedAccounts;
 	}
-	
 	
 	/* Add Checking Account
 	 * Return true if successful, false if failed
 	 */
-	public boolean addCheckingAccount(BigDecimal initialDeposit, int customerID, String customerName){
-		int accountNumber = this.numberOfCreatedAccounts +1;		
-		CheckingAccount newCheckingAccount = new CheckingAccount(accountNumber, initialDeposit, customerID, customerName);
-		accounts.add(newCheckingAccount);
-		this.numberOfCreatedAccounts++;
-		return true;
+	boolean addCheckingAccount(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName){
+		if(getIndexOfAccount(accountNumber) == -1) {
+			CheckingAccount newCheckingAccount = new CheckingAccount(accountNumber, initialDeposit, customerID, customerName);
+			accounts.add(newCheckingAccount);
+			this.numberOfCreatedAccounts++;
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	
 	/* Add Gold Account 
 	 * Return true if successful, false if failed
 	 */
-	public boolean addGoldAccount(BigDecimal initialDeposit, int customerID, String customerName) {
-		int accountNumber = this.numberOfCreatedAccounts +1;		
-		GoldAccount newGoldAccount = new GoldAccount(accountNumber, initialDeposit, customerID, customerName);
-		accounts.add(newGoldAccount);
-		this.numberOfCreatedAccounts++;
-		return true;
+	boolean addGoldAccount(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName) {	
+		if(getIndexOfAccount(accountNumber) == -1) {
+			GoldAccount newGoldAccount = new GoldAccount(accountNumber, initialDeposit, customerID, customerName);
+			accounts.add(newGoldAccount);
+			this.numberOfCreatedAccounts++;
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	
 	/* Add regular Account
 	 * Return true if successful, false if failed
 	 */
-	public boolean addRegularAccount(BigDecimal initialDeposit, int customerID, String customerName) {
-		int accountNumber = this.numberOfCreatedAccounts +1;		
-		RegularAccount newRegularAccount = new RegularAccount(accountNumber, initialDeposit, customerID, customerName);
-		accounts.add(newRegularAccount);
-		this.numberOfCreatedAccounts++;
-		return true;
+	boolean addRegularAccount(int accountNumber, BigDecimal initialDeposit, int customerID, String customerName) {
+		if(getIndexOfAccount(accountNumber) == -1) {
+			RegularAccount newRegularAccount = new RegularAccount(accountNumber, initialDeposit, customerID, customerName);
+			accounts.add(newRegularAccount);
+			this.numberOfCreatedAccounts++;
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	
 	/* Deposit funds
 	 * Return true if successful, false if failed
 	 */
-	public boolean depositFunds(int accountNumber, BigDecimal depositAmount) {
+	boolean depositFunds(int accountNumber, BigDecimal depositAmount) {
 		int index = this.getIndexOfAccount(accountNumber);
 		if(index != -1) {
 			if(accounts.get(index).depositFunds(depositAmount)) {
@@ -92,7 +108,7 @@ class AccountLedger {
 	/* Withdraw funds
 	 * Return true if successful, false if failed
 	 */
-	public boolean withdrawFunds(int accountNumber, BigDecimal withdrawAmount) {
+	boolean withdrawFunds(int accountNumber, BigDecimal withdrawAmount) {
 		int index = this.getIndexOfAccount(accountNumber);
 		if(index != -1) {
 			if(accounts.get(index).withdrawFunds(withdrawAmount)) {
@@ -106,7 +122,7 @@ class AccountLedger {
 	/* Get account information
 	 * Take account number to find and print information on account
 	 */
-	public String getAccountInfo(int accountNumber) {
+	String getAccountInfo(int accountNumber) {
 		int index = this.getIndexOfAccount(accountNumber);
 		if(index != -1) {
 			return accounts.get(index).toString();
@@ -118,7 +134,7 @@ class AccountLedger {
 	/* Remove Account
 	 * Take account number and delete that account
 	 */
-	public boolean removeAccount(int accountNumber) {
+	boolean removeAccount(int accountNumber) {
 		int index = this.getIndexOfAccount(accountNumber);
 		if(index != -1) {
 			accounts.remove(index);
@@ -132,7 +148,7 @@ class AccountLedger {
 	/* Apply end of month adjustments
 	 * Enhanced for loop calls on each Accounts end of month adjustment method
 	 */
-	public void monthReset() {
+	void monthReset() {
 		for(Account thisAccount: accounts) {
 			thisAccount.monthReset();
 		}
@@ -144,10 +160,11 @@ class AccountLedger {
 	
 	/* Get sum of all account balances
 	 */
-	public BigDecimal sumOfAccounts() {
+	BigDecimal sumOfAccounts() {
 		BigDecimal sum = new BigDecimal(0);
+		
 		for (Account thisAccount : accounts) {
-			sum.add(thisAccount.getBalance());
+			sum = sum.add(thisAccount.getBalance());
 		}
 		return sum;
 	}
@@ -155,21 +172,29 @@ class AccountLedger {
 	
 	/* Get number of Accounts contained in Accounts 
 	 */
-	public int getNumberOfAccounts() {
+	int getNumberOfAccounts() {
 		return accounts.size();
 	}
 	
 	
 	/* Get average balance value of accounts 
 	 */
-	public BigDecimal getAverageValue() {
-		return this.sumOfAccounts().divide(new BigDecimal(this.getNumberOfAccounts()));
+	BigDecimal getAverageValue() {
+		BigDecimal total = sumOfAccounts();
+		
+		int totalLength = total.toString().length();
+		MathContext newMC = new MathContext(totalLength, RoundingMode.HALF_UP);
+		String numberOfAccountsString = String.valueOf(getNumberOfAccounts());
+		BigDecimal numberOfAccounts = new BigDecimal(numberOfAccountsString);
+		BigDecimal averageValue = total.divide(numberOfAccounts, newMC);
+		
+		return averageValue;
 	}
 	
 	
 	/* Get the largest Account balance from accounts
 	 */
-	public Account getLargestValue() {	
+	Account getLargestValue() {	
 		Account largestAccount;
 		
 		if(accounts.size() > 0) {
@@ -181,7 +206,7 @@ class AccountLedger {
 					largestAccount = accounts.get(i);
 				}
 			}
-			return largestAccount;
+			return largestAccount.copy();
 			
 		}else {
 			return null;
@@ -191,7 +216,7 @@ class AccountLedger {
 	
 	/* Get an ArrayList of accounts with 0 balance
 	 */
-	public ArrayList<Account> getAccountsWith0Balance(){
+	ArrayList<Account> getAccountsWith0Balance(){
 		ArrayList<Account> zeroBalanceAccounts = new ArrayList<>();
 		
 		for (Account thisAccount : accounts) {
@@ -200,13 +225,28 @@ class AccountLedger {
 				zeroBalanceAccounts.add(thisAccount);
 			}
 		}
-		return zeroBalanceAccounts;
+		return copyAnAccountList(zeroBalanceAccounts);
+	}
+	
+	/*Searching methods*/
+	
+	boolean accountNumberExists(int accountNumber) {
+		if(getIndexOfAccount(accountNumber) == -1) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 	
 	
-	
-	
-	/*Searching methods*/
+	BigDecimal getAccountBalance(int accountNumber) {
+		if(accountNumberExists(accountNumber)) {
+			Account thisAccount = searchByAccountNumber(accountNumber);
+			return thisAccount.copyBalance();
+		}else {
+			return null;
+		}
+	}
 	
 	
 	/*  Takes an account number and returns index of corresponding account
@@ -226,7 +266,7 @@ class AccountLedger {
 	
 	/* Takes an account number and gets corresponding Account
 	 */
-	public Account searchByAccountNumber(int accountNumber) {
+	Account searchByAccountNumber(int accountNumber) {
 		int index = -1;
 		
 		for(int i = 0 ; i < accounts.size() ; i++) {
@@ -235,7 +275,7 @@ class AccountLedger {
 			}
 		}
 		if(index >-1) {
-			return this.accounts.get(index);
+			return this.accounts.get(index).copy();
 		}else {
 			return null;
 		}
@@ -244,7 +284,7 @@ class AccountLedger {
 	
 	/* Takes customer name and returns list of corresponding accounts 
 	 */
-	public ArrayList<Account> searchAccountsByCustomerName(String customerName) {
+	ArrayList<Account> searchAccountsByCustomerName(String customerName) {
 		ArrayList<Account> results = new ArrayList<>();
 		
 		for (Account thisAccount : accounts) {
@@ -252,12 +292,12 @@ class AccountLedger {
 				results.add(thisAccount);
 			}
 		}
-		return results;
+		return copyAnAccountList(results);
 	}
 	
 	/* Takes customerID and returns a list of corresponding accounts
 	 */
-	public ArrayList<Account> searchAccountsByCustomerID(int customerID) {
+	ArrayList<Account> searchAccountsByCustomerID(int customerID) {
 		ArrayList<Account> queryList = new ArrayList<>();
 		
 		for (Account thisAccount : accounts) {
@@ -265,9 +305,37 @@ class AccountLedger {
 				queryList.add(thisAccount);
 			}
 		}
-		return queryList;
+		return copyAnAccountList(queryList);
+		
 	}
 	
+	public static ArrayList<Account> copyAnAccountList(ArrayList<Account> realList){
+		ArrayList<Account> copyOfList = new ArrayList<>();
+		for(Account realAccount: realList) {
+			Account accountCopy = realAccount.copy();
+			copyOfList.add(accountCopy);
+		}
+		
+		return copyOfList;
+	}
+	
+	ArrayList<Account> copyMainAccountList(){
+		ArrayList<Account> copyOfLedger = new ArrayList<>();
+		for(Account realAccount : accounts) {
+			Account accountCopy = realAccount.copy();
+			copyOfLedger.add(accountCopy);
+		}
+		
+		return copyOfLedger;
+	}
+	
+	@Override
+	public AccountLedger copy() {
+		ArrayList<Account> copyOfAccounts = copyMainAccountList();
+		
+		AccountLedger ledgerCopy = new AccountLedger("ledgerCopy", copyOfAccounts);
+		return ledgerCopy;
+	}
 	
 	/*Account Ledger toString method*/
 	@Override

@@ -48,13 +48,23 @@ class GoldAccount extends Account{
 		BigDecimal earnedInterest = this.getBalance().multiply(new BigDecimal(monthlyInterest));
 		this.depositFunds(earnedInterest);
 	}
-
+	@Override
+	public Account copy() {
+		int accountNumberCopy = this.getAccountNumber();
+		String customerNameCopy = this.getCustomerName();
+		int customerIDCopy = this.getCustomerID();
+		BigDecimal balanceCopy = this.copyBalance();
+		
+		GoldAccount accountCopy = new GoldAccount(accountNumberCopy, balanceCopy, customerIDCopy, customerNameCopy);
+		return accountCopy;
+	}
 	
 	/*toString method*/
 	@Override
 	public String toString() {
-		String value = "\t\tGold Account\nInterest Rate: " + this.interestRate + "\n";
+		String value = "Gold Account\n";
 		value += super.toString();
+		value += "Interest Rate: " + this.interestRate + "\n";
 		return value;
 	}
 }

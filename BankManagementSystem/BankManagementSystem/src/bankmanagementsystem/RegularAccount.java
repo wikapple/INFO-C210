@@ -48,12 +48,24 @@ class RegularAccount extends Account{
 		}
 	}
 	
+	@Override
+	public Account copy() {
+		int accountNumberCopy = this.getAccountNumber();
+		String customerNameCopy = this.getCustomerName();
+		int customerIDCopy = this.getCustomerID();
+		BigDecimal balanceCopy = this.copyBalance();
+		
+		RegularAccount accountCopy = new RegularAccount(accountNumberCopy, balanceCopy, customerIDCopy, customerNameCopy);
+		return accountCopy;
+	}
+	
 	
 	/*toString method*/
 	@Override
 	public String toString() {
-		String value = "\t\tRegular Account\nInterest Rate: " + this.interestRate + "\tMonthly Fee: " + this.monthlyFee + "\n";
+		String value = "Regular Account\n";
 		value += super.toString();
+		value += "Interest Rate: " + this.interestRate + "\nMonthly Fee: " + this.monthlyFee + "\n";
 		return value;
 	}
 }

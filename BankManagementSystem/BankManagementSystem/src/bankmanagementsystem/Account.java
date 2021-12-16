@@ -9,11 +9,11 @@ import java.math.RoundingMode;
  * Author: William Applegate
  * Class: INFO-C210
  */
-abstract class Account {
+public abstract class Account implements Comparable<Account>, Copeable<Account>{
 	
 	/*Data Fields*/
 	private int accountNumber;
-	private BigDecimal balance;
+	protected BigDecimal balance;
 	private int customerID;
 	private String customerName;
 	
@@ -33,7 +33,7 @@ abstract class Account {
 	}
 	
 	public BigDecimal getBalance() {
-		return this.balance.setScale(2, RoundingMode.HALF_UP);
+		return this.balance.setScale(2, RoundingMode.FLOOR);
 	}
 	public int getCustomerID() {
 		return this.customerID;
@@ -44,11 +44,11 @@ abstract class Account {
 	
 	
 	/*setters*/
-	public void setBalance(BigDecimal newBalance) {
+	void setBalance(BigDecimal newBalance) {
 		this.balance = new BigDecimal(newBalance.toString());
 	}
 	
-	public void setBalance(int newBalance) {
+	void setBalance(int newBalance) {
 		this.balance = new BigDecimal(newBalance);
 	}
 	
@@ -68,7 +68,16 @@ abstract class Account {
 	 * Returns true if successful, false if failed
 	 */
 	public boolean depositFunds(BigDecimal depositAmount) {
-		if(depositAmount.compareTo(new BigDecimal(0)) > 0) {
+		
+		BigDecimal transactionFee = new BigDecimal("0");
+		if(this instanceof ChargesTransactionFee) {
+			if(((ChargesTransactionFee)this).isFeeCharged()){
+				transactionFee = new BigDecimal(((ChargesTransactionFee)this).getTransactionFee());	
+			}
+		}
+		
+		
+		if(depositAmount.compareTo(transactionFee) > 0) {
 		this.balance = this.balance.add(depositAmount);
 		return true;
 		}else {
@@ -82,22 +91,31 @@ abstract class Account {
 	 */
 	public boolean withdrawFunds(BigDecimal withdrawAmount) {
 		
+		if(this instanceof ChargesTransactionFee){
+			if(((ChargesTransactionFee)this).isFeeCharged()){
+				BigDecimal transactionFee = new BigDecimal(((ChargesTransactionFee)(this)).getTransactionFee());
+			
+				BigDecimal withdrawAmountPlusFee = withdrawAmount.add(transactionFee);
+			
+				if(withdrawAmountPlusFee.compareTo(this.balance)<=0) {
+					this.balance = this.balance.subtract(withdrawAmount);
+					return true;
+				}else {
+					return false;
+			
+				}
+			}
+		}
+		
 		/*if able to complete withdraw*/
 		if(withdrawAmount.compareTo(this.balance) <= 0) {
 			this.balance = this.balance.subtract(withdrawAmount);
 			return true;
-		
-		/*If able to partially complete withdraw less than amount requested*/
-		}else if(this.balance.compareTo(new BigDecimal("0")) > 0){
-			System.out.println("Withdraw amount greater than balance");
-			System.out.println("Withdrawing balance of $" + this.balance.setScale(2, RoundingMode.HALF_UP));
-			this.setBalance(new BigDecimal("0.00"));
-			return true;
-		
 		/*If no withdraw is possible*/
 		}else {
 			return false;
 		}
+	
 	}
 	
 	
@@ -106,13 +124,32 @@ abstract class Account {
 		
 	}
 	
+	public BigDecimal copyBalance() {
+
+		BigDecimal balanceCopy = (new BigDecimal("0")).add(this.balance);
+		
+		return balanceCopy;
+	}
 	
 	/*toString method*/
 	@Override
 	public String toString() {
-		String value = "Account Number: " + this.accountNumber + "\tAccount Balance: " + this.balance.setScale(2, RoundingMode.HALF_UP);
-		value += "\nCustomer ID: " + this.customerID + "\tCustomer Name: " + this.customerName + "\n";
+		String value = "Account Number: " + this.accountNumber + "\n";
+		value+= "Customer Name: " + this.customerName + "\n";
+		value += "Customer ID: " + this.customerID + "\n";
+		value += "Account Balance: " + this.balance.setScale(2, RoundingMode.FLOOR) + "\n";
+
 		return value;
+	}
+	
+	
+	
+	public String getBalanceAsString() {
+		return this.balance.setScale(2, RoundingMode.FLOOR).toString();
+	}
+	
+	public static String roundBigDecimal(BigDecimal input) {
+		return input.setScale(2, RoundingMode.FLOOR).toString();
 	}
 	
 	
@@ -129,5 +166,21 @@ abstract class Account {
 			return false;
 		}
 	}
+	
+	@Override
+	public int compareTo(Account ac) {
+		int difference = this.accountNumber - ac.getAccountNumber();
+		if (difference > 0) {
+			return 1;
+		}else if(difference == 0) {
+			return 0;
+		}else {
+			return -1;
+		}
+	}
+	
+	
+	
+	
 
 }
