@@ -2,4 +2,4 @@
 Indiana University Southeast
 Fall 2021 
 
-*Class one of two Java programming courses.
+*Class one of two covering Java programming.
